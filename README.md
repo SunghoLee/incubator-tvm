@@ -29,6 +29,10 @@ Apache TVM (incubating) is a compiler stack for deep learning systems. It is des
 productivity-focused deep learning frameworks, and the performance- and efficiency-focused hardware backends.
 TVM works with deep learning frameworks to provide end to end compilation to different backends.
 
+Installation
+-------
+See this document: https://docs.tvm.ai/install/from_source.html
+
 License
 -------
 © Contributors Licensed under an [Apache-2.0](LICENSE) license.
