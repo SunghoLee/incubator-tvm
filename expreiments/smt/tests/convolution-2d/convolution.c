@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifdef TEST
+#include <time.h>
+#else
 #include "klee/klee.h"
+#endif
 
 #define WIDTH 12
 #define HEIGHT 12
@@ -106,40 +111,35 @@ int** convolution_2D_2(int matrix[WIDTH][HEIGHT]){
 }
 
 int main(){
-//  int matrix[WIDTH][HEIGHT] = {{1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12},
-//  {1,2,3,4,5,6,7,8,9,10,11,12}
-//  };
-
-  int matrix[WIDTH][HEIGHT];
   int i, j;
+  int matrix[WIDTH][HEIGHT];
 
+#ifdef TEST
+  srand(time(0));
+
+  for(i = 0; i < WIDTH; i++){
+    for(j = 0; j < WIDTH; j++){
+      matrix[i][j] = rand();
+    }
+  }
+#else
   klee_make_symbolic(matrix, sizeof(matrix), "matrix");
-
+#endif
   //print_s(matrix);
 
   int** x = convolution_2D_1(matrix);
   int** y = convolution_2D_2(matrix);
 
-  //print(x);
-  //print(y);
-
+#ifdef TEST
+  print(x);
+  print(y);
+#else
   for(i=0; i<WIDTH; i++){
     for(j=0; j<HEIGHT; j++){
       klee_assert(x[i][j] == y[i][j]);
     }
   }
-
-  //print(x);
+#endif
 
   mfree(x);
   mfree(y);
