@@ -1,0 +1,4 @@
+tests/*/klee*
+tests/*/*.bc
+tests/*/*.info
+tests/*/*.debug
